@@ -65,4 +65,8 @@
         </repository>
     </repositories>
 
+    <scm>
+    	<url>https://appify-framework.googlecode.com/svn/be/appify/appify-parent/</url>
+    	<connection>scm:svn:https://appify-framework.googlecode.com/svn/be/appify/appify-parent/</connection>
+    </scm>
 </project>
