@@ -65,7 +65,7 @@
     </repositories>
 
     <scm>
-    	<url>https://appify-framework.googlecode.com/svn/be/appify/appify-parent/tags/appify-parent-0.1.0</url>
-    	<connection>scm:svn:https://appify-framework.googlecode.com/svn/be/appify/appify-parent/tags/appify-parent-0.1.0</connection>
+    	<url>https://appify-framework.googlecode.com/svn/trunk/be/appify/appify-parent/tags/appify-parent-0.1.0</url>
+    	<connection>scm:svn:https://appify-framework.googlecode.com/svn/trunk/be/appify/appify-parent/tags/appify-parent-0.1.0</connection>
     </scm>
 </project>
