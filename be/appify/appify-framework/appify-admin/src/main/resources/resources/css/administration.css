@@ -1,0 +1,192 @@
+.clearfix:after {
+    content: ".";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    line-height: 0;
+    height: 0;
+}
+ 
+.clearfix {
+    display: inline-block;
+}
+ 
+html[xmlns] .clearfix {
+    display: block;
+}
+ 
+* html .clearfix {
+    height: 1%;
+}
+
+#app-header {
+    color: #596F8F;
+    padding: 8px 15px;
+    text-shadow: 0 1px 0 white;
+}
+
+#app-header h1 {
+    font-size: 22px;
+    font-weight: 200;
+}
+
+#app-header .version {
+	font-size: 10px;
+	float: right;
+}
+
+.x-tree-panel .x-panel-body {
+    padding: 4px 0;
+}
+
+.x-tab button {
+    height: 16px;
+}
+
+.x-tab button .x-tab-inner {
+    height: 16px;
+}
+
+.menu-data {
+    background-image: url(../icons/menu/data.png) !important
+}
+
+.menu-reports {
+    background-image: url(../icons/menu/reports.png) !important
+}
+
+.menu-settings {
+    background-image: url(../icons/menu/settings.png) !important
+}
+
+.dashboard {
+    background-image: url(../icons/dashboard.png) !important
+}
+
+.reports-logs {
+    background-image: url(../icons/reports/logs.png) !important
+}
+
+.news {
+    background-image: url(../icons/news.png) !important
+}
+
+.news-article {
+    background-image: url(../icons/news/article.png) !important
+}
+
+.news-tag {
+    background-image: url(../icons/news/tag.png) !important
+}
+
+.news-feed {
+    background-image: url(../icons/news/feed.png) !important
+}
+
+.toolbar-create {
+    background-image: url(../icons/toolbar/create.png) !important
+}
+
+.toolbar-save {
+    background-image: url(../icons/toolbar/save.png) !important
+}
+
+.toolbar-delete {
+    background-image: url(../icons/toolbar/delete.png) !important
+}
+
+.toolbar-ok {
+    background-image: url(../icons/toolbar/ok.png) !important
+}
+
+.toolbar-cancel {
+    background-image: url(../icons/toolbar/cancel.png) !important
+}
+
+.toolbar-refresh {
+    background-image: url(../icons/toolbar/refresh.png) !important
+}
+
+.toolbar-search {
+    background-image: url(../icons/toolbar/search.png) !important
+}
+
+.toolbar-export {
+    background-image: url(../icons/toolbar/export.png) !important
+}
+
+.toolbar-export-excel {
+    background-image: url(../icons/toolbar/export-excel.png) !important
+}
+
+.toolbar-export-csv {
+    background-image: url(../icons/toolbar/export-csv.png) !important
+}
+
+.toolbar-export-pdf {
+    background-image: url(../icons/toolbar/export-pdf.png) !important
+}
+
+.toolbar-export-cloud {
+    background-image: url(../icons/toolbar/export-cloud.png) !important
+}
+
+.toolbar-print {
+    background-image: url(../icons/toolbar/print.png) !important
+}
+
+.toolbar-update {
+    background-image: url(../icons/toolbar/update.png) !important
+}
+
+.dialog-question {
+    background: url(../icons/dialog/question.png) no-repeat !important;
+}
+
+.dialog-information {
+    background: url(../icons/dialog/information.png) no-repeat !important;
+}
+
+.dialog-warning {
+    background: url(../icons/dialog/warning.png) no-repeat !important;
+}
+
+.dialog-error {
+    background: url(../icons/dialog/error.png) no-repeat !important;
+}
+
+.operation-create {
+    background-image: url(../icons/operation/create.png) !important
+}
+
+.operation-list {
+    background-image: url(../icons/operation/list.png) !important
+}
+
+.portfolio {
+    background-image: url(../icons/portfolio.png) !important
+}
+
+.portfolio-project {
+    background-image: url(../icons/portfolio/project.png) !important
+}
+
+.general {
+    background-image: url(../icons/general.png) !important
+}
+
+.general-image {
+    background-image: url(../icons/general/image.png) !important
+}
+
+.auction {
+    background-image: url(../icons/auction.png) !important
+}
+
+.auction-item {
+    background-image: url(../icons/auction/item.png) !important
+}
+
+.auction-offer {
+    background-image: url(../icons/auction/offer.png) !important
+}
