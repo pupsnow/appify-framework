@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>be.appify</groupId>
 	<artifactId>appify-parent</artifactId>
@@ -15,14 +16,25 @@
 		<repository>
 			<id>appify-release</id>
 			<name>Public Appify Repository</name>
-			<url>https://repository-appify.forge.cloudbees.com/release/</url>
+			<url>dav:https://repository-appify.forge.cloudbees.com/release/</url>
 		</repository>
 		<snapshotRepository>
 			<id>appify-snapshot</id>
 			<name>Appify Snapshot repository</name>
-			<url>https://repository-appify.forge.cloudbees.com/snapshot/</url>
+			<url>dav:https://repository-appify.forge.cloudbees.com/snapshot/</url>
+			<uniqueVersion>false</uniqueVersion>
 		</snapshotRepository>
 	</distributionManagement>
+
+	<build>
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-webdav-jackrabbit</artifactId>
+				<version>1.0-beta-7</version>
+			</extension>
+		</extensions>
+	</build>
 
 	<repositories>
 		<repository>
