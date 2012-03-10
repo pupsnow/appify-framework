@@ -9,7 +9,7 @@
 	<parent>
 		<groupId>be.appify</groupId>
 		<artifactId>appify-parent</artifactId>
-		<version>0.1-SNAPSHOT</version>
+		<version>0.1.1-SNAPSHOT</version>
 	</parent>
 
     <properties>
@@ -122,4 +122,9 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+	<scm>
+		<url>https://appify-framework.googlecode.com/svn/trunk/be/appify/appify-framework</url>
+		<connection>scm:svn:https://appify-framework.googlecode.com/svn/trunk/be/appify/appify-framework</connection>
+	</scm>
 </project>
