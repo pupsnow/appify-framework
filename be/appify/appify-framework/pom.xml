@@ -5,11 +5,12 @@
     <artifactId>appify-framework</artifactId>
     <name>Appify Framework - Cherry Chic</name>
     <packaging>pom</packaging>
+    <version>0.1.1-SNAPSHOT</version>
 
 	<parent>
 		<groupId>be.appify</groupId>
 		<artifactId>appify-parent</artifactId>
-		<version>0.1.1-SNAPSHOT</version>
+		<version>0.1.1</version>
 	</parent>
 
     <properties>
