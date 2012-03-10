@@ -1,10 +1,9 @@
 <?xml version="1.0"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>be.appify</groupId>
 	<artifactId>appify-parent</artifactId>
-	<version>0.1.1-SNAPSHOT</version>
+	<version>0.1.1</version>
 	<name>Appify Parent</name>
 	<packaging>pom</packaging>
 
@@ -90,7 +89,7 @@
 	</repositories>
 
 	<scm>
-		<url>https://appify-framework.googlecode.com/svn/tags/appify-parent-0.1.0</url>
-		<connection>scm:svn:https://appify-framework.googlecode.com/svn/tags/appify-parent-0.1.0</connection>
+		<url>https://appify-framework.googlecode.com/svn/tags/appify-parent-0.1.1</url>
+		<connection>scm:svn:https://appify-framework.googlecode.com/svn/tags/appify-parent-0.1.1</connection>
 	</scm>
 </project>
