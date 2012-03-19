@@ -247,7 +247,30 @@ var fieldFactories = {
         combo.addListener('afterrender', function() {
         	comboRendered(store, combo, attributes.value);
         });
-    	return combo;
+        var component = combo;
+        var createAction = types[parameter.referencedType].actions['create'];
+        if(createAction != null) {
+        	var button = Ext.create('Ext.button.Button', createAction);
+        	// TODO: fix this
+        	component = Ext.create('Ext.form.FieldContainer', {
+        		layout: {
+                    type: 'hbox',
+                    defaultMargins: {top: 0, right: 5, bottom: 0, left: 0}
+        		},
+        		title: attributes.fieldLabel,
+        		defaults: {
+        			hideLabel: true
+        		},
+        		items: [ combo, button ]
+        	});
+        	component.isValid = combo.isValid;
+        	component.isDirty = combo.isDirty;
+        	component.getRawValue = combo.getRawValue;
+        	component.processRawValue = combo.processRawValue;
+        	component.validateValue = combo.validateValue;
+        	component.getErrors = combo.getErrors;
+        }
+    	return component;
     }
 };
 
@@ -339,13 +362,13 @@ function registerType(type, namespace, namespaceNode) {
     };
     createTypeModel(type);
     var defaultOperation = null;
-    var actions = [ ];
+    type.actions = [ ];
     for(var j in type.operations) {
         var operation = type.operations[j];
         if(operation.defaultOperation) {
             defaultOperation = operation;
         }
-        registerOperation(type, operation, actions);
+        registerOperation(type, operation);
     }
     if(namespaceNode != null) {
         var typeNode = namespaceNode.appendChild({
@@ -359,13 +382,13 @@ function registerType(type, namespace, namespaceNode) {
             doOperation(this.type, this.defaultOperation);
         };
         typeNode.contextMenu = Ext.create('Ext.menu.Menu', {
-            items: actions
+            items: type.actions
         });
     }
     types[type.getFullName()] = type;
 }
 
-function registerOperation(type, operation, actions) {
+function registerOperation(type, operation) {
     var operationId = operation.name;
     var action = Ext.create('Ext.Action', {
         iconCls: 'operation-' + operationId,
@@ -376,7 +399,7 @@ function registerOperation(type, operation, actions) {
             doOperation(this.type, this.operation);
         }
     });
-    actions[actions.length] = action;
+    type.actions[operationId] = action;
 }
 
 function createTypeModel(type) {
@@ -387,10 +410,10 @@ function createTypeModel(type) {
     var associations = [];
     for(var i in type.attributes) {
         var attribute = type.attributes[i];
-        fields[fields.length] = {
+        fields.push({
             name: attribute.name,
             type: 'auto'
-        }
+        });
     }
     Ext.define('type.' + type.getFullName(), {
         extend: 'Ext.data.Model',
@@ -893,6 +916,7 @@ var dataTreePanel = Ext.create('Ext.tree.Panel', {
                 record.doDefault();
             }
         },
+        // TODO: fix this
         itemcontextmenu: function(view, record, node, index, e) {
             if(record.contextMenu) {
                 e.stopEvent();
@@ -904,6 +928,10 @@ var dataTreePanel = Ext.create('Ext.tree.Panel', {
 });
 
 Ext.onReady(function() {
+	var version = '${version}';
+	if(version.indexOf('SNAPSHOT') != -1) {
+		version = version.replace('SNAPSHOT', '${buildNumber}');
+	}
     Ext.create('Ext.Viewport', {
         layout: {
             type: 'border',
@@ -919,7 +947,7 @@ Ext.onReady(function() {
             collapsible: false,
             split: false,
             height: 50,
-            html: '<div class="version">Appify v${version}<br/>' +
+            html: '<div class="version">Appify v' + version + '<br/>' +
                   applicationName + ' v' + applicationVersion + '</div>' +
                   '<h1>Appify Administrator</h1>'
         },
