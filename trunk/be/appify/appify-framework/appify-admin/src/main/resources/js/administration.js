@@ -251,7 +251,6 @@ var fieldFactories = {
         var createAction = types[parameter.referencedType].actions['create'];
         if(createAction != null) {
         	var button = Ext.create('Ext.button.Button', createAction);
-        	// TODO: fix this
         	component = Ext.create('Ext.form.FieldContainer', {
         		layout: {
                     type: 'hbox',
@@ -263,12 +262,6 @@ var fieldFactories = {
         		},
         		items: [ combo, button ]
         	});
-        	component.isValid = combo.isValid;
-        	component.isDirty = combo.isDirty;
-        	component.getRawValue = combo.getRawValue;
-        	component.processRawValue = combo.processRawValue;
-        	component.validateValue = combo.validateValue;
-        	component.getErrors = combo.getErrors;
         }
     	return component;
     }
@@ -546,9 +539,7 @@ function cancelForm(id) {
         var form = component.items.items[0];
         var dirty = false;
         form.items.each(function(field) {
-            if(field.isDirty()) {
-                dirty = true;
-            }
+            dirty = checkFieldDirty(field, dirty);
         });
         if(dirty) {
             Ext.MessageBox.show({
@@ -570,6 +561,17 @@ function cancelForm(id) {
             closeTab(id);
         }
     }
+}
+
+function checkFieldDirty(field, dirty) {
+	if(field.isXType('container')) {
+		form.items.each(function(field) {
+	        dirty = checkFieldDirty(field, dirty);
+	    });
+	} else if(field.isXType('field') && field.isDirty()) {
+	    dirty = true;
+	}
+	return dirty;
 }
 
 function createForm(type, operation, instance, id) {
@@ -638,9 +640,7 @@ function checkFormValid(id) {
         var form = component.items.items[0];
         var valid = true;
         form.items.each(function(field) {
-            if(!field.isValid()) {
-                valid = false;
-            }
+            valid = checkFieldValid(field, valid);
         });
         if(valid) {
             form.saveAndClose.enable();
@@ -648,6 +648,17 @@ function checkFormValid(id) {
             form.saveAndClose.disable();
         }
     }
+}
+
+function checkFieldValid(field, valid) {
+	if(field.isXType('container')) {
+		field.items.each(function(field) {
+            valid = checkFieldValid(field, valid);
+        });
+	} else if(field.isXType('field') && !field.isValid()) {
+        valid = false;
+    }
+	return valid;
 }
 
 function getVType(type) {
