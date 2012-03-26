@@ -21,7 +21,7 @@ window.alert = function(key) {
 		}
 	}
 	Ext.MessageBox.alert({
-        title: 'Error',
+        title: translate('dialog.error.title'),
         msg: translate(key, messageArguments),
         buttons: Ext.MessageBox.OK,
         icon: 'dialog-error'
@@ -565,7 +565,7 @@ function cancelForm(id) {
 
 function checkFieldDirty(field, dirty) {
 	if(field.isXType('container')) {
-		form.items.each(function(field) {
+		field.items.each(function(field) {
 	        dirty = checkFieldDirty(field, dirty);
 	    });
 	} else if(field.isXType('field') && field.isDirty()) {
