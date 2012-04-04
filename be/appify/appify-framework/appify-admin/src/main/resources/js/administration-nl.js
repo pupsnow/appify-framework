@@ -9,5 +9,9 @@ translations['nl'] = {
 	'error.failedToSaveChanges': 'Wijzigingen opslaan mislukt',
 	'error.unknownOperation': 'Onbekende opdracht: {0}',
 	'menu.data': 'Gegevens',
-	'progress.sendingData': 'Bezig met versturen van gegevens...'
+	'progress.sendingData': 'Bezig met versturen van gegevens...',
+	'profile.account': 'Account',
+	'profile.viewProfile': 'Profiel Bekijken',
+	'profile.privacy': 'Privacy',
+	'profile.signOut': 'Afmelden'
 }

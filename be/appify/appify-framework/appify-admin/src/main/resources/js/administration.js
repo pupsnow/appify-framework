@@ -29,7 +29,9 @@ window.alert = function(key) {
 };
 
 var languages = ['en'];
+var languagesLoaded = false;
 var translations = [];
+
 
 function translate(key) {
 	var messageArguments = [];
@@ -53,6 +55,15 @@ function translate(key) {
 
 Ext.state.Manager.setProvider(Ext.create('Ext.state.CookieProvider'));
 Ext.tip.QuickTipManager.init();
+
+Ext.define('Profile', {
+    extend: 'Ext.data.Model',
+    fields: [
+        {name: 'name', type: 'string'},
+        {name: 'pictureThumb', type: 'string'},
+        {name: 'email', type: 'string'}
+    ]
+});
 
 Ext.define('Namespace', {
     extend: 'Ext.data.Model',
@@ -141,6 +152,30 @@ registerType({
 
 var stores = [];
 
+var languageStore = Ext.create('Ext.data.Store', {
+    model: 'Language',
+    proxy: {
+        type: 'ajax',
+        url: 'languages',
+        reader: {
+            type: 'json',
+            root: 'languages'
+        }
+    },
+    listeners: {
+        load: function() {
+        	languages = [];
+        	languageStore.each(function(record) {
+        		languages.push(record.raw.code);
+        	});
+        	languages.push('en');
+        	languagesLoaded = true;
+        	initializeUI();
+        }
+    },
+    autoLoad: true
+});
+
 var namespaces = Ext.create('Ext.data.Store', {
     model: 'Namespace',
     proxy: {
@@ -167,28 +202,6 @@ var namespaces = Ext.create('Ext.data.Store', {
             dataTreePanel.setLoading(false);
         }
     }
-});
-
-var languageStore = Ext.create('Ext.data.Store', {
-    model: 'Language',
-    proxy: {
-        type: 'ajax',
-        url: 'languages',
-        reader: {
-            type: 'json',
-            root: 'languages'
-        }
-    },
-    listeners: {
-        load: function() {
-        	languages = [];
-        	languageStore.each(function(record) {
-        		languages.push(record.raw.code);
-        	});
-        	languages.push('en');
-        }
-    },
-    autoLoad: true
 });
 
 var fieldFactories = {
@@ -938,49 +951,107 @@ var dataTreePanel = Ext.create('Ext.tree.Panel', {
     }
 });
 
-Ext.onReady(function() {
-	var version = '${version}';
-	if(version.indexOf('SNAPSHOT') != -1) {
-		version = version.replace('SNAPSHOT', '${buildNumber}');
-	}
-    Ext.create('Ext.Viewport', {
-        layout: {
-            type: 'border',
-            padding: 5
-        },
-        defaults: {
-            split: true
-        },
-        items: [{
-            region: 'north',
-            id: 'app-header',
-            xtype: 'box',
-            collapsible: false,
-            split: false,
-            height: 50,
-            html: '<div class="version">Appify v' + version + '<br/>' +
-                  applicationName + ' v' + applicationVersion + '</div>' +
-                  '<h1>Appify Administrator</h1>'
-        },
-        {
-            region: 'west',
-            layout:'accordion',
-            width: 200,
-            collapsible: true,
-            layoutConfig: {
-                titleCollapse: false,
-                animate: true
-            },
-            items: [{
-                title: translate('menu.data'),
-                iconCls: 'menu-data',
-                layout: 'fit',
-                items: [dataTreePanel]
-            }]
-        },
-        tabPanel]
-    });
-    
-    dataTreePanel.setLoading(true);
-    namespaces.load();
-});
+function initializeUI() {
+	Ext.onReady(function() {
+		var profileButton = Ext.create('Ext.button.Button', {
+			scale: 'large',
+			iconAlign: 'right',
+			icon: '../resources/icons/profile/profile.png',
+			menu: [{
+				text: translate('profile.account'),
+				icon: '../resources/icons/profile/account.png',
+				handler: function() {
+					window.open('https://www.google.com/settings/');
+				}
+			}, {
+				text: translate('profile.privacy'),
+				icon: '../resources/icons/profile/privacy.png',
+				handler: function() {
+					window.open('https://www.google.com/settings/privacy?tab=4');
+				}
+			}, '-', {
+				text: translate('profile.viewProfile'),
+				icon: '../resources/icons/profile/view-profile.png',
+				handler: function() {
+					window.open('https://profiles.google.com/?tab=h&authuser=0');
+				}
+			}, '-', {
+				text: translate('profile.signOut'),
+				icon: '../resources/icons/profile/sign-out.png',
+				handler: function() {
+					window.open('https://mail.google.com/mail/u/0/?logout');
+				}
+			}]
+		});
+
+		var currentProfile = Ext.create('Ext.data.Store', {
+			model: 'Profile',
+			proxy: {
+		        type: 'ajax',
+		        url: 'security/profiles/current',
+		        reader: {
+		            type: 'json'
+		        }
+			},
+			listeners: {
+		        load: function() {
+		        	var profile = currentProfile.first();
+		        	if(profile) {
+			        	profileButton.setText(profile.data.name);
+			        	// TODO: adjust size
+			        	profileButton.setIcon(profile.data.pictureThumb);
+		        	}
+		        }
+			},
+		    autoLoad: true
+		});
+		
+		var version = '${version}';
+		if(version.indexOf('SNAPSHOT') != -1) {
+			version = version.replace('SNAPSHOT', '${buildNumber}');
+		}
+	    Ext.create('Ext.Viewport', {
+	        layout: {
+	            type: 'border',
+	            padding: 5
+	        },
+	        defaults: {
+	            split: true
+	        },
+	        items: [{
+	            region: 'north',
+	            collapsible: false,
+	            split: false,
+	            height: 64,
+	            xtype: 'toolbar',
+	            id: 'app-header',
+	        	items: [{
+	                xtype: 'box',
+	                html: '<h1>Appify Administrator</h1>' +
+	                      '<div class="version">Appify v' + version + ' &bull; ' +
+	                      applicationName + ' v' + applicationVersion + '</div>'
+	        	}, '->', profileButton]
+	        },
+	        {
+	            region: 'west',
+	            layout:'accordion',
+	            width: 200,
+	            collapsible: true,
+	            layoutConfig: {
+	                titleCollapse: false,
+	                animate: true
+	            },
+	            items: [{
+	                title: translate('menu.data'),
+	                iconCls: 'menu-data',
+	                layout: 'fit',
+	                items: [dataTreePanel]
+	            }]
+	        },
+	        tabPanel]
+	    });
+	    
+	    dataTreePanel.setLoading(true);
+	    namespaces.load();
+	});
+}

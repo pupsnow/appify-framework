@@ -9,5 +9,9 @@ translations['en'] = {
 	'error.failedToSaveChanges': 'Failed to save changes',
 	'error.unknownOperation': 'Unknown operation: {0}',
 	'menu.data': 'Data',
-	'progress.sendingData': 'Sending data...'
+	'progress.sendingData': 'Sending data...',
+	'profile.account': 'Account',
+	'profile.viewProfile': 'View Profile',
+	'profile.privacy': 'Privacy',
+	'profile.signOut': 'Sign Out'
 }
