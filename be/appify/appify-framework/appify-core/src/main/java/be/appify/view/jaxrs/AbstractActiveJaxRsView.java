@@ -46,6 +46,7 @@ public abstract class AbstractActiveJaxRsView implements ActiveJaxRsView {
     private UriInfo uriInfo;
     private String typeName;
     private DelegatingParameterViewFactory parameterFactory;
+	private HttpHeaders headers;
 
     // CDI needs this constructor.
     AbstractActiveJaxRsView() {
@@ -87,6 +88,7 @@ public abstract class AbstractActiveJaxRsView implements ActiveJaxRsView {
 
     @Context
     public void setHttpHeaders(HttpHeaders headers) {
+    	this.headers = headers;
         setInternationalizationProvider(new FallbackResourceBundleInternationalizationProvider(
                 headers.getAcceptableLanguages().toArray(new Locale[0])));
     }
@@ -101,6 +103,10 @@ public abstract class AbstractActiveJaxRsView implements ActiveJaxRsView {
 
     protected AbstractActiveJaxRsView(Object... values) {
         this.values = Arrays.copyOf(values, values.length);
+    }
+    
+    protected HttpHeaders getHeaders() {
+    	return headers;
     }
 
     @Override
