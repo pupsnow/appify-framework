@@ -14,7 +14,13 @@ import be.appify.stereotype.core.beans.fields.FieldAccess;
 import be.appify.stereotype.core.beans.fields.FieldModel;
 import be.appify.stereotype.core.beans.fields.FieldType;
 import be.appify.stereotype.core.beans.fields.IllegalAnnotationException;
+import be.appify.stereotype.core.beans.validation.MaxLengthValidator;
+import be.appify.stereotype.core.beans.validation.MinLengthValidator;
+import be.appify.stereotype.core.beans.validation.RequiredValidator;
+import be.appify.stereotype.core.beans.validation.Validator;
 import be.appify.stereotype.core.beans.validation.ValidatorFactory;
+
+import com.google.common.collect.Sets;
 
 public class BeanAnalyzerTest {
 	private BeanAnalyzer beanAnalyzer;
@@ -24,7 +30,10 @@ public class BeanAnalyzerTest {
 
 	@Before
 	public void before() {
-		beanAnalyzer = new BeanAnalyzer(new ValidatorFactory());
+		beanAnalyzer = new BeanAnalyzer(new ValidatorFactory(Sets.<Validator<?>> newHashSet(
+				new MaxLengthValidator(),
+				new MinLengthValidator(),
+				new RequiredValidator())));
 	}
 
 	@Test

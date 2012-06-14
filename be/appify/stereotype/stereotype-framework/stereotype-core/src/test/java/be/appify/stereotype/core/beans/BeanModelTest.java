@@ -13,10 +13,15 @@ import org.junit.rules.ExpectedException;
 
 import be.appify.stereotype.core.Advice;
 import be.appify.stereotype.core.beans.fields.FieldModel;
+import be.appify.stereotype.core.beans.validation.MaxLengthValidator;
+import be.appify.stereotype.core.beans.validation.MinLengthValidator;
+import be.appify.stereotype.core.beans.validation.RequiredValidator;
 import be.appify.stereotype.core.beans.validation.ValidationException;
+import be.appify.stereotype.core.beans.validation.Validator;
 import be.appify.stereotype.core.beans.validation.ValidatorFactory;
 
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 
 public class BeanModelTest {
 	private BeanModel<Advice> beanModel;
@@ -26,7 +31,10 @@ public class BeanModelTest {
 
 	@Before
 	public void before() {
-		beanModel = new BeanAnalyzer(new ValidatorFactory()).analyze(Advice.class);
+		beanModel = new BeanAnalyzer(new ValidatorFactory(Sets.<Validator<?>> newHashSet(
+				new MaxLengthValidator(),
+				new MinLengthValidator(),
+				new RequiredValidator()))).analyze(Advice.class);
 	}
 
 	@Test

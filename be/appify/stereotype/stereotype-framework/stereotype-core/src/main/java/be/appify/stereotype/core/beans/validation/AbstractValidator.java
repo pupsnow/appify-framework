@@ -15,7 +15,7 @@ public abstract class AbstractValidator<A extends Annotation, T> implements Vali
 	}
 
 	public boolean supportsAnnotation(Annotation annotation) {
-		return annotationType.isInstance(annotation);
+		return annotationType.isAssignableFrom(annotation.getClass());
 	}
 
 	public boolean supportsType(Class<?> type) {
