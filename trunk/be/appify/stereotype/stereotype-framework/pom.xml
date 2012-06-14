@@ -7,5 +7,6 @@
   <packaging>pom</packaging>
   <modules>
   	<module>stereotype-core</module>
+  	<module>stereotype-di-spring</module>
   </modules>
 </project>

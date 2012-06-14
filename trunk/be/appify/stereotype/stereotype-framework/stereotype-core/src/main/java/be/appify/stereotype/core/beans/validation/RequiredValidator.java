@@ -1,13 +1,14 @@
 package be.appify.stereotype.core.beans.validation;
 
+import javax.inject.Named;
+
 import org.apache.commons.lang.StringUtils;
 
 import be.appify.stereotype.core.i18n.Message;
 
+@Named
 public class RequiredValidator extends AbstractValidator<Required, Object> {
-	public static final RequiredValidator INSTANCE = new RequiredValidator();
-
-	private RequiredValidator() {
+	public RequiredValidator() {
 		super(Required.class, Object.class);
 	}
 

@@ -3,13 +3,19 @@ package be.appify.stereotype.core.beans.validation;
 import java.lang.annotation.Annotation;
 import java.util.Collection;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import com.google.common.collect.Sets;
 
+@Named
 public class ValidatorFactory {
-	private final Collection<Validator<?>> validators = Sets.<Validator<?>> newHashSet(
-			new MaxLengthValidator(0),
-			new MinLengthValidator(0),
-			RequiredValidator.INSTANCE);
+	private final Collection<Validator<?>> validators;
+
+	@Inject
+	public ValidatorFactory(Collection<Validator<?>> validators) {
+		this.validators = Sets.newHashSet(validators);
+	}
 
 	@SuppressWarnings("unchecked")
 	public <T> Validator<T> createValidator(Annotation validatorAnnotation) {

@@ -1,9 +1,16 @@
 package be.appify.stereotype.core.beans.validation;
 
+import javax.inject.Named;
+
 import be.appify.stereotype.core.i18n.Message;
 
+@Named
 public class MinLengthValidator extends AbstractValidator<MinLength, String> {
 	private final int length;
+
+	public MinLengthValidator() {
+		this(0);
+	}
 
 	public MinLengthValidator(int length) {
 		super(MinLength.class, String.class);
