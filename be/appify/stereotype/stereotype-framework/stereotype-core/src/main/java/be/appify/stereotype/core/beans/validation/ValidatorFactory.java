@@ -8,6 +8,7 @@ import javax.inject.Named;
 
 import com.google.common.collect.Sets;
 
+// TODO: invert validator dependency from annotation to validator
 @Named
 public class ValidatorFactory {
 	private final Collection<Validator<?>> validators;
