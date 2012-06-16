@@ -25,6 +25,9 @@ import be.appify.stereotype.core.beans.validation.CompositeValidator;
 import be.appify.stereotype.core.beans.validation.Validator;
 import be.appify.stereotype.core.beans.validation.ValidatorFactory;
 import be.appify.stereotype.core.i18n.Message;
+import be.appify.stereotype.core.operation.GenericOperation;
+import be.appify.stereotype.core.operation.Operation;
+import be.appify.stereotype.core.operation.OperationFactory;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -32,15 +35,33 @@ import com.google.common.collect.Sets;
 
 class BeanAnalyzer {
 	private final ValidatorFactory validatorFactory;
+	private final OperationFactory operationFactory;
 
-	public BeanAnalyzer(ValidatorFactory validatorFactory) {
+	public BeanAnalyzer(ValidatorFactory validatorFactory, OperationFactory operationFactory) {
 		this.validatorFactory = validatorFactory;
+		this.operationFactory = operationFactory;
 	}
 
 	public <T> BeanModel<T> analyze(Class<T> beanClass) {
 		return new BeanModel.Builder<T>(beanClass)
 				.fields(getFields(beanClass))
+				.operations(getOperations(beanClass))
 				.build();
+	}
+
+	private <T> Collection<GenericOperation<?>> getOperations(Class<T> beanClass) {
+		Collection<GenericOperation<?>> operations = Sets.newHashSet();
+		for (Annotation annotation : beanClass.getAnnotations()) {
+			Class<? extends Annotation> annotationType = annotation.annotationType();
+			if (annotationType.isAnnotationPresent(Operation.class)) {
+				GenericOperation<?> operation = operationFactory.getOperation(annotationType.getAnnotation(
+						Operation.class).value());
+				if (operation != null) {
+					operations.add(operation);
+				}
+			}
+		}
+		return operations;
 	}
 
 	private <T> Collection<FieldModel<T, ?>> getFields(Class<T> beanClass) {

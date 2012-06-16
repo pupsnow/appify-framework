@@ -3,14 +3,20 @@ package be.appify.stereotype.core.operation;
 import java.util.Map;
 
 import be.appify.stereotype.core.beans.BeanModel;
+import be.appify.stereotype.core.persistence.Persistence;
 
 public class CreateOperation<B> implements SpawningOperation<B> {
 
-	private static final CreateOperation<Object> PROTOTYPE = new CreateOperation<Object>(null);
-	private BeanModel<B> beanModel;
+	private final BeanModel<B> beanModel;
+	private Persistence persistence;
 
-	public CreateOperation(BeanModel<B> beanModel) {
+	public CreateOperation(Persistence persistence, BeanModel<B> beanModel) {
 		this.beanModel = beanModel;
+		this.persistence = persistence;
+	}
+
+	public CreateOperation(Persistence persistence) {
+		this(persistence, null);
 	}
 
 	@Override
@@ -21,16 +27,14 @@ public class CreateOperation<B> implements SpawningOperation<B> {
 
 	@Override
 	public B execute(Map<String, Object> namedParameters) {
-		return beanModel.create(namedParameters);
-	}
-
-	public static SpawningOperation<?> prototype() {
-		return PROTOTYPE;
+		B bean = beanModel.create(namedParameters);
+		persistence.save(bean);
+		return bean;
 	}
 
 	@Override
 	public <N> SpawningOperation<N> createNew(BeanModel<N> beanModel) {
-		return new CreateOperation<N>(beanModel);
+		return new CreateOperation<N>(persistence, beanModel);
 	}
-	
+
 }

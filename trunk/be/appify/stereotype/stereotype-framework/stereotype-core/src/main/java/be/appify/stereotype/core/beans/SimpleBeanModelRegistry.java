@@ -4,17 +4,19 @@ import java.util.Collection;
 import java.util.Map;
 
 import be.appify.stereotype.core.beans.validation.ValidatorFactory;
+import be.appify.stereotype.core.operation.OperationFactory;
 
 import com.google.common.collect.Maps;
 
 public class SimpleBeanModelRegistry implements BeanModelRegistry {
 
-	private Map<Class<?>, BeanModel<?>> models;
+	private final Map<Class<?>, BeanModel<?>> models;
 
-	public SimpleBeanModelRegistry(ValidatorFactory validatorFactory, Class<?>... classes) {
-		BeanAnalyzer analyzer = new BeanAnalyzer(validatorFactory);
+	public SimpleBeanModelRegistry(ValidatorFactory validatorFactory, OperationFactory operationFactory,
+			Class<?>... classes) {
+		BeanAnalyzer analyzer = new BeanAnalyzer(validatorFactory, operationFactory);
 		this.models = Maps.newHashMap();
-		for(Class<?> c : classes) {
+		for (Class<?> c : classes) {
 			BeanModel<?> beanModel = analyzer.analyze(c);
 			models.put(c, beanModel);
 		}
@@ -24,9 +26,9 @@ public class SimpleBeanModelRegistry implements BeanModelRegistry {
 	@Override
 	public <T> BeanModel<T> getBeanModel(Class<T> beanClass) {
 		BeanModel<?> beanModel = models.get(beanClass);
-		if(beanModel == null) {
-			for(Class<?> c : models.keySet()) {
-				if(c.isAssignableFrom(beanClass)) {
+		if (beanModel == null) {
+			for (Class<?> c : models.keySet()) {
+				if (c.isAssignableFrom(beanClass)) {
 					beanModel = models.get(c);
 					break;
 				}

@@ -19,6 +19,8 @@ import be.appify.stereotype.core.beans.validation.RequiredValidator;
 import be.appify.stereotype.core.beans.validation.ValidationException;
 import be.appify.stereotype.core.beans.validation.Validator;
 import be.appify.stereotype.core.beans.validation.ValidatorFactory;
+import be.appify.stereotype.core.operation.GenericOperation;
+import be.appify.stereotype.core.operation.OperationFactory;
 
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -34,7 +36,8 @@ public class BeanModelTest {
 		beanModel = new BeanAnalyzer(new ValidatorFactory(Sets.<Validator<?>> newHashSet(
 				new MaxLengthValidator(),
 				new MinLengthValidator(),
-				new RequiredValidator()))).analyze(Advice.class);
+				new RequiredValidator())),
+				new OperationFactory(Sets.<GenericOperation<?>> newHashSet())).analyze(Advice.class);
 	}
 
 	@Test
