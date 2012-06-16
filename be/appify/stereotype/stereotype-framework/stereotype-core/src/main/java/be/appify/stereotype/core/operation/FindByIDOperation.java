@@ -1,22 +1,28 @@
 package be.appify.stereotype.core.operation;
 
 import java.util.Map;
+import java.util.UUID;
 
 import be.appify.stereotype.core.beans.BeanModel;
+import be.appify.stereotype.core.persistence.Persistence;
 
 public class FindByIDOperation<B> implements SpawningOperation<B> {
 
-	private static final SpawningOperation<?> PROTOTYPE = new FindByIDOperation<Object>(null);
 	private BeanModel<B> beanModel;
-	
-	public FindByIDOperation(BeanModel<B> beanModel) {
+	private Persistence persistence;
+
+	private FindByIDOperation(Persistence persistence, BeanModel<B> beanModel) {
+		this.persistence = persistence;
 		this.beanModel = beanModel;
+	}
+
+	public FindByIDOperation(Persistence persistence) {
+		this(persistence, null);
 	}
 
 	@Override
 	public B execute(Object... parameters) {
-		// TODO Auto-generated method stub
-		return null;
+		return persistence.findByID(beanModel.getType(), (UUID) parameters[0]);
 	}
 
 	@Override
@@ -27,11 +33,7 @@ public class FindByIDOperation<B> implements SpawningOperation<B> {
 
 	@Override
 	public <N> SpawningOperation<N> createNew(BeanModel<N> beanModel) {
-		return new FindByIDOperation<N>(beanModel);
-	}
-
-	public static SpawningOperation<?> prototype() {
-		return PROTOTYPE;
+		return new FindByIDOperation<N>(persistence, beanModel);
 	}
 
 }

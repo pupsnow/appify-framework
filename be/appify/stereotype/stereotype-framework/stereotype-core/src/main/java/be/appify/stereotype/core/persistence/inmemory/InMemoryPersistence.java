@@ -10,34 +10,42 @@ import be.appify.stereotype.core.persistence.Persistence;
 import com.google.common.collect.Maps;
 
 public class InMemoryPersistence implements Persistence {
-	
+
 	private BeanModelRegistry beanModelRegistry;
-	private Map<Class<?>, Map<UUID, Object>> beansByUUID;
-	private Map<Object, UUID> uuidsByBean;
-	
+	private final Map<Class<?>, Map<UUID, Object>> beansByUUID;
+	private final Map<Object, UUID> uuidsByBean;
+
+	public InMemoryPersistence() {
+		this(null);
+	}
+
 	public InMemoryPersistence(BeanModelRegistry beanModelRegistry) {
-		this.beanModelRegistry = beanModelRegistry;
+		setBeanModelRegistry(beanModelRegistry);
 		this.beansByUUID = Maps.newHashMap();
 		this.uuidsByBean = Maps.newHashMap();
 	}
 
+	public void setBeanModelRegistry(BeanModelRegistry beanModelRegistry) {
+		this.beanModelRegistry = beanModelRegistry;
+	}
+
 	@Override
-	public <T> void persist(T bean) {
+	public <T> void save(T bean) {
 		@SuppressWarnings("unchecked")
 		BeanModel<T> beanModel = (BeanModel<T>) beanModelRegistry.getBeanModel(bean.getClass());
 		add(beanModel.getType(), bean);
 	}
-	
+
 	private <T> void add(Class<T> beanClass, T bean) {
 		Map<UUID, Object> beansForClass = getBeansFor(beanClass);
 		UUID uuid = UUID.randomUUID();
-		beansForClass.put(uuid , bean);
+		beansForClass.put(uuid, bean);
 		uuidsByBean.put(bean, uuid);
 	}
-	
+
 	private Map<UUID, Object> getBeansFor(Class<?> beanClass) {
 		Map<UUID, Object> beansForClass = beansByUUID.get(beanClass);
-		if(beansForClass == null) {
+		if (beansForClass == null) {
 			beansForClass = Maps.newHashMap();
 			beansByUUID.put(beanClass, beansForClass);
 		}
@@ -54,5 +62,5 @@ public class InMemoryPersistence implements Persistence {
 	public <T> UUID getID(T bean) {
 		return uuidsByBean.get(bean);
 	}
-	
+
 }

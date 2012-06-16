@@ -4,10 +4,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import be.appify.stereotype.core.beans.fields.FieldAccessor;
 import be.appify.stereotype.core.beans.fields.FieldModel;
 import be.appify.stereotype.core.i18n.Message;
+import be.appify.stereotype.core.operation.GenericOperation;
 import be.appify.stereotype.core.operation.SpawningOperation;
 
 import com.google.common.base.Preconditions;
@@ -17,11 +19,13 @@ import com.google.common.collect.Sets;
 
 public final class BeanModel<T> {
 	private Map<String, FieldModel<T, ?>> fields;
+	private Map<Class<?>, GenericOperation<?>> operations;
 	private List<FieldModel<T, ?>> orderedFields;
 	public Class<T> type;
 
 	public static final class Builder<T> {
 		private Collection<FieldModel<T, ?>> fields;
+		private Set<GenericOperation<?>> operations;
 		private final Class<T> type;
 
 		public Builder(Class<T> type) {
@@ -34,8 +38,14 @@ public final class BeanModel<T> {
 			return this;
 		}
 
+		public Builder<T> operations(Collection<GenericOperation<?>> operations) {
+			this.operations = Sets.newHashSet(operations);
+			return this;
+		}
+
 		public BeanModel<T> build() {
 			Preconditions.checkNotNull(fields, "fields cannot be null");
+			Preconditions.checkNotNull(operations, "operations cannot be null");
 			BeanModel<T> instance = new BeanModel<T>();
 			instance.fields = Maps.newHashMap();
 			for (FieldModel<T, ?> field : fields) {
@@ -44,6 +54,10 @@ public final class BeanModel<T> {
 			instance.orderedFields = Lists.newArrayList(instance.fields.values());
 			Collections.sort(instance.orderedFields);
 			instance.type = type;
+			instance.operations = Maps.newHashMap();
+			for (GenericOperation<?> operation : this.operations) {
+				instance.operations.put(operation.getClass(), operation);
+			}
 			return instance;
 		}
 	}
@@ -106,9 +120,10 @@ public final class BeanModel<T> {
 		Message<String> fieldName = Message.create(bean.getClass(), propertyName);
 		fieldModel.getAccessor().getValidator().validate(value, fieldName);
 	}
-	
+
 	public <O extends SpawningOperation<?>> SpawningOperation<T> newOperation(Class<O> operationClass) {
-		return null;
+		GenericOperation<?> operation = operations.get(operationClass);
+		return (SpawningOperation<T>) operation.createNew(this);
 	}
 
 	public Class<T> getType() {
