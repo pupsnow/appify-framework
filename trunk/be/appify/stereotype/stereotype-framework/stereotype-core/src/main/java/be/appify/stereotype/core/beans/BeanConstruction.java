@@ -33,7 +33,7 @@ public class BeanConstruction<T> {
 		for (FieldAccessor<T, ?> fieldAccessor : fields.keySet()) {
 			initializeField(fieldAccessor);
 		}
-		Constructor<?> constructor = findSuitableConstructor();
+		Constructor<T> constructor = findSuitableConstructor();
 		createBean(constructor);
 		setFields();
 		return bean;
@@ -51,21 +51,22 @@ public class BeanConstruction<T> {
 		}
 	}
 
-	private void createBean(Constructor<?> constructor) {
+	private void createBean(Constructor<T> constructor) {
 		Object[] parameters = new Object[constructorParameters.size()];
 		for (Integer index : constructorParameters.keySet()) {
 			parameters[index] = constructorParameters.get(index);
 		}
 		try {
-			bean = type.cast(constructor.newInstance(parameters));
+			bean = constructor.newInstance(parameters);
 		} catch (ReflectiveOperationException e) {
 			throw new BeanConstructionException("Failed to invoke constructor " + constructor + " with parameters <"
 					+ parameters + ">.", e);
 		}
 	}
 
-	private Constructor<?> findSuitableConstructor() {
-		Constructor<?> result = null;
+	@SuppressWarnings("unchecked")
+	private Constructor<T> findSuitableConstructor() {
+		Constructor<T> result = null;
 		for (Constructor<?> constructor : type.getConstructors()) {
 			if (constructor.getParameterTypes().length == constructorParameters.size()) {
 				boolean matches = true;
@@ -82,7 +83,7 @@ public class BeanConstruction<T> {
 					}
 				}
 				if (matches) {
-					result = constructor;
+					result = (Constructor<T>) constructor;
 					break;
 				}
 			}

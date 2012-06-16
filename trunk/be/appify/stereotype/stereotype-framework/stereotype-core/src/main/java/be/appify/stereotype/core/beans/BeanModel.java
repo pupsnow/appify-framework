@@ -105,4 +105,8 @@ public final class BeanModel<T> {
 		Message<String> fieldName = Message.create(bean.getClass(), propertyName);
 		fieldModel.getAccessor().getValidator().validate(value, fieldName);
 	}
+
+	public Class<T> getType() {
+		return type;
+	}
 }

@@ -147,6 +147,7 @@ class BeanAnalyzer {
 		return fieldAnnotation;
 	}
 
+	// TODO: work on FieldModel.Builder instead of passing every parameter around
 	@SuppressWarnings("unchecked")
 	private <T, F> FieldModel<T, F> createFieldModel(Method method, Annotation fieldAnnotation, Class<T> beanClass) {
 		String propertyName = getPropertyName(method);
