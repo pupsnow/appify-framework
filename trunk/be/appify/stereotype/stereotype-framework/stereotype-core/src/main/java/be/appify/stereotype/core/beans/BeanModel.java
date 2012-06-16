@@ -8,6 +8,7 @@ import java.util.Map;
 import be.appify.stereotype.core.beans.fields.FieldAccessor;
 import be.appify.stereotype.core.beans.fields.FieldModel;
 import be.appify.stereotype.core.i18n.Message;
+import be.appify.stereotype.core.operation.SpawningOperation;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
@@ -104,6 +105,10 @@ public final class BeanModel<T> {
 		}
 		Message<String> fieldName = Message.create(bean.getClass(), propertyName);
 		fieldModel.getAccessor().getValidator().validate(value, fieldName);
+	}
+	
+	public <O extends SpawningOperation<?>> SpawningOperation<T> newOperation(Class<O> operationClass) {
+		return null;
 	}
 
 	public Class<T> getType() {
