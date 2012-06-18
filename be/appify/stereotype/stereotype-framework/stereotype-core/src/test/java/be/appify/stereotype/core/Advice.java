@@ -10,9 +10,11 @@ import be.appify.stereotype.core.beans.validation.MinLength;
 import be.appify.stereotype.core.beans.validation.Required;
 import be.appify.stereotype.core.operation.Create;
 import be.appify.stereotype.core.operation.FindByID;
+import be.appify.stereotype.core.operation.Update;
 
 @Create
 @FindByID
+@Update
 public class Advice {
 	private final String name;
 	private String description;

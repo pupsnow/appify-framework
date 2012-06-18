@@ -6,4 +6,6 @@ public interface BeanModelRegistry {
 	<T> BeanModel<T> getBeanModel(Class<T> beanClass);
 
 	Collection<BeanModel<?>> getAllRegisteredBeanModels();
+
+	void initialize(Class<?>... classes);
 }

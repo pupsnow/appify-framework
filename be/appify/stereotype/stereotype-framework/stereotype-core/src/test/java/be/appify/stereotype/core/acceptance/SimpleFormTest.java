@@ -20,8 +20,10 @@ import be.appify.stereotype.core.beans.validation.ValidatorFactory;
 import be.appify.stereotype.core.operation.CreateOperation;
 import be.appify.stereotype.core.operation.FindByIDOperation;
 import be.appify.stereotype.core.operation.GenericOperation;
+import be.appify.stereotype.core.operation.ManipulatingOperation;
 import be.appify.stereotype.core.operation.OperationFactory;
 import be.appify.stereotype.core.operation.SpawningOperation;
+import be.appify.stereotype.core.operation.UpdateOperation;
 import be.appify.stereotype.core.persistence.inmemory.InMemoryPersistence;
 import be.appify.stereotype.core.session.GenericSessionManager;
 import be.appify.stereotype.core.session.Session;
@@ -43,7 +45,9 @@ public class SimpleFormTest {
 						new RequiredValidator())),
 				new OperationFactory(Sets.<GenericOperation<?>> newHashSet(
 						new CreateOperation<Object>(persistence),
-						new FindByIDOperation<Object>(persistence))), Advice.class);
+						new FindByIDOperation<Object>(persistence),
+						new UpdateOperation<Object>(persistence))));
+		beanModelRegistry.initialize(Advice.class);
 		persistence.setBeanModelRegistry(beanModelRegistry);
 		sessionManager = new GenericSessionManager(beanModelRegistry, persistence);
 	}
@@ -51,9 +55,7 @@ public class SimpleFormTest {
 	@Test
 	public void shouldFindCreatedEntityById() {
 		Session session = sessionManager.newSession();
-
-		SpawningOperation<Advice> create = session.newOperation(Advice.class, CreateOperation.class);
-
+		SpawningOperation<Advice> create = session.newSpawningOperation(Advice.class, CreateOperation.class);
 		Map<String, Object> values = Maps.newHashMap();
 		values.put("name", "Carpool to work");
 		values.put("description", "Carpooling reduces environmental impact, traffic congestions and stress.");
@@ -64,13 +66,43 @@ public class SimpleFormTest {
 				createdAdvice.getDescription());
 
 		UUID id = session.getID(createdAdvice);
-
-		SpawningOperation<Advice> find = session.newOperation(Advice.class, FindByIDOperation.class);
-
-		Advice adviceFound = find.execute(id);
+		SpawningOperation<Advice> find = session.newSpawningOperation(Advice.class, FindByIDOperation.class);
+		values = Maps.newHashMap();
+		values.put("id", id);
+		Advice adviceFound = find.execute(values);
 		assertNotNull(adviceFound);
 		assertEquals("Carpool to work", adviceFound.getName());
 		assertEquals("Carpooling reduces environmental impact, traffic congestions and stress.",
 				adviceFound.getDescription());
+	}
+
+	@Test
+	public void shouldUpdateEntity() {
+		Session session = sessionManager.newSession();
+		SpawningOperation<Advice> create = session.newSpawningOperation(Advice.class, CreateOperation.class);
+		Map<String, Object> values = Maps.newHashMap();
+		values.put("name", "Carpool to work");
+		values.put("description", "Carpooling reduces environmental impact, traffic congestions and stress.");
+		Advice createdAdvice = create.execute(values);
+		assertNotNull(createdAdvice);
+		assertEquals("Carpool to work", createdAdvice.getName());
+		assertEquals("Carpooling reduces environmental impact, traffic congestions and stress.",
+				createdAdvice.getDescription());
+
+		UUID id = session.getID(createdAdvice);
+		ManipulatingOperation<Advice> manipulatingOperation = session.newManipulatingOperation(Advice.class,
+				UpdateOperation.class);
+		values = Maps.newHashMap();
+		values.put("id", id);
+		values.put("description", "Updated description");
+		manipulatingOperation.execute(values);
+
+		SpawningOperation<Advice> find = session.newSpawningOperation(Advice.class, FindByIDOperation.class);
+		values = Maps.newHashMap();
+		values.put("id", id);
+		Advice adviceFound = find.execute(values);
+		assertNotNull(adviceFound);
+		assertEquals("Carpool to work", adviceFound.getName());
+		assertEquals("Updated description", adviceFound.getDescription());
 	}
 }
