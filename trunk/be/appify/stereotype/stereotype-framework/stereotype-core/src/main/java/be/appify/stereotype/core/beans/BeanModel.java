@@ -10,7 +10,6 @@ import be.appify.stereotype.core.beans.fields.FieldAccessor;
 import be.appify.stereotype.core.beans.fields.FieldModel;
 import be.appify.stereotype.core.i18n.Message;
 import be.appify.stereotype.core.operation.GenericOperation;
-import be.appify.stereotype.core.operation.SpawningOperation;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
@@ -121,9 +120,9 @@ public final class BeanModel<T> {
 		fieldModel.getAccessor().getValidator().validate(value, fieldName);
 	}
 
-	public <O extends SpawningOperation<?>> SpawningOperation<T> newOperation(Class<O> operationClass) {
+	public <O extends GenericOperation<?>> GenericOperation<T> newOperation(Class<O> operationClass) {
 		GenericOperation<?> operation = operations.get(operationClass);
-		return (SpawningOperation<T>) operation.createNew(this);
+		return operation.createNew(this);
 	}
 
 	public Class<T> getType() {
