@@ -42,7 +42,7 @@ class BeanAnalyzer {
 		this.operationFactory = operationFactory;
 	}
 
-	public <T> BeanModel<T> analyze(Class<T> beanClass) {
+	public <T extends AbstractBean> BeanModel<T> analyze(Class<T> beanClass) {
 		return new BeanModel.Builder<T>(beanClass)
 				.fields(getFields(beanClass))
 				.operations(getOperations(beanClass))

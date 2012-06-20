@@ -3,9 +3,9 @@ package be.appify.stereotype.core.beans;
 import java.util.Collection;
 
 public interface BeanModelRegistry {
-	<T> BeanModel<T> getBeanModel(Class<T> beanClass);
+	<T extends AbstractBean> BeanModel<T> getBeanModel(Class<T> beanClass);
 
-	Collection<BeanModel<?>> getAllRegisteredBeanModels();
+	Collection<BeanModel<? extends AbstractBean>> getAllRegisteredBeanModels();
 
 	void initialize(Class<?>... classes);
 }

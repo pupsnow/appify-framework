@@ -23,16 +23,18 @@ public class SimpleBeanModelRegistry implements BeanModelRegistry {
 		this.models = Maps.newHashMap();
 	}
 
+	@Override
 	public void initialize(Class<?>... classes) {
 		for (Class<?> c : classes) {
-			BeanModel<?> beanModel = analyzer.analyze(c);
+			@SuppressWarnings("unchecked")
+			BeanModel<?> beanModel = analyzer.analyze((Class<? extends AbstractBean>) c);
 			models.put(c, beanModel);
 		}
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> BeanModel<T> getBeanModel(Class<T> beanClass) {
+	public <T extends AbstractBean> BeanModel<T> getBeanModel(Class<T> beanClass) {
 		BeanModel<?> beanModel = models.get(beanClass);
 		if (beanModel == null) {
 			for (Class<?> c : models.keySet()) {

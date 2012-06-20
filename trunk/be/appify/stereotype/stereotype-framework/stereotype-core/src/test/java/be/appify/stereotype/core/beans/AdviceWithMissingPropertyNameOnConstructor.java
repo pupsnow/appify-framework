@@ -1,11 +1,11 @@
 package be.appify.stereotype.core.beans;
 
-import be.appify.stereotype.core.beans.fields.stereotypes.NumberType;
 import be.appify.stereotype.core.beans.fields.stereotypes.LongTextType;
+import be.appify.stereotype.core.beans.fields.stereotypes.NumberType;
 import be.appify.stereotype.core.beans.fields.stereotypes.ShortTextType;
 import be.appify.stereotype.core.beans.validation.Required;
 
-public class AdviceWithMissingPropertyNameOnConstructor {
+public class AdviceWithMissingPropertyNameOnConstructor extends AbstractBean {
 	private final String name;
 	private String description;
 	private int timesImplemented;

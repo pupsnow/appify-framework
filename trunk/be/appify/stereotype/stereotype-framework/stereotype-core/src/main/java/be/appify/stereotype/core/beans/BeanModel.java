@@ -16,13 +16,13 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
-public final class BeanModel<T> {
+public final class BeanModel<T extends AbstractBean> {
 	private Map<String, FieldModel<T, ?>> fields;
 	private Map<Class<?>, GenericOperation<?>> operations;
 	private List<FieldModel<T, ?>> orderedFields;
 	public Class<T> type;
 
-	public static final class Builder<T> {
+	public static final class Builder<T extends AbstractBean> {
 		private Collection<FieldModel<T, ?>> fields;
 		private Set<GenericOperation<?>> operations;
 		private final Class<T> type;
