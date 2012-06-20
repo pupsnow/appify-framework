@@ -4,7 +4,7 @@ import be.appify.stereotype.core.beans.fields.stereotypes.LongTextType;
 import be.appify.stereotype.core.beans.fields.stereotypes.ShortTextType;
 import be.appify.stereotype.core.beans.validation.Required;
 
-public class AdviceWithInvalidFieldType {
+public class AdviceWithInvalidFieldType extends AbstractBean {
 	private final String name;
 	private String description;
 	private int timesImplemented;

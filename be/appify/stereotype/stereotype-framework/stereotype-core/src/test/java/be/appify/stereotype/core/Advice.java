@@ -1,5 +1,8 @@
 package be.appify.stereotype.core;
 
+import javax.persistence.Entity;
+
+import be.appify.stereotype.core.beans.AbstractBean;
 import be.appify.stereotype.core.beans.fields.DisplayField;
 import be.appify.stereotype.core.beans.fields.Order;
 import be.appify.stereotype.core.beans.fields.stereotypes.BooleanType;
@@ -12,10 +15,11 @@ import be.appify.stereotype.core.operation.Create;
 import be.appify.stereotype.core.operation.FindByID;
 import be.appify.stereotype.core.operation.Update;
 
+@Entity
 @Create
 @FindByID
 @Update
-public class Advice {
+public class Advice extends AbstractBean {
 	private final String name;
 	private String description;
 	private int timesImplemented;

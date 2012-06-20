@@ -5,11 +5,13 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import be.appify.stereotype.core.beans.AbstractBean;
 import be.appify.stereotype.core.beans.BeanModel;
 import be.appify.stereotype.core.persistence.Persistence;
+import be.appify.stereotype.core.persistence.Transaction;
 
 @Named
-public class CreateOperation<B> implements SpawningOperation<B> {
+public class CreateOperation<B extends AbstractBean> implements SpawningOperation<B> {
 
 	private final BeanModel<B> beanModel;
 	private Persistence persistence;
@@ -26,13 +28,15 @@ public class CreateOperation<B> implements SpawningOperation<B> {
 
 	@Override
 	public B execute(Map<String, Object> namedParameters) {
+		Transaction transaction = persistence.startTransaction();
 		B bean = beanModel.create(namedParameters);
-		persistence.save(bean);
+		transaction.save(bean);
+		transaction.commit();
 		return bean;
 	}
 
 	@Override
-	public <N> SpawningOperation<N> createNew(BeanModel<N> beanModel) {
+	public <N extends AbstractBean> SpawningOperation<N> createNew(BeanModel<N> beanModel) {
 		return new CreateOperation<N>(persistence, beanModel);
 	}
 

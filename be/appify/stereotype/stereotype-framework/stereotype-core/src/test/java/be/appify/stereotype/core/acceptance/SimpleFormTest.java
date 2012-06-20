@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import be.appify.stereotype.core.Advice;
+import be.appify.stereotype.core.beans.AbstractBean;
 import be.appify.stereotype.core.beans.BeanModelRegistry;
 import be.appify.stereotype.core.beans.SimpleBeanModelRegistry;
 import be.appify.stereotype.core.beans.validation.MaxLengthValidator;
@@ -44,12 +45,11 @@ public class SimpleFormTest {
 						new MinLengthValidator(),
 						new RequiredValidator())),
 				new OperationFactory(Sets.<GenericOperation<?>> newHashSet(
-						new CreateOperation<Object>(persistence),
-						new FindByIDOperation<Object>(persistence),
-						new UpdateOperation<Object>(persistence))));
+						new CreateOperation<AbstractBean>(persistence),
+						new FindByIDOperation<AbstractBean>(persistence),
+						new UpdateOperation<AbstractBean>(persistence))));
 		beanModelRegistry.initialize(Advice.class);
-		persistence.setBeanModelRegistry(beanModelRegistry);
-		sessionManager = new GenericSessionManager(beanModelRegistry, persistence);
+		sessionManager = new GenericSessionManager(beanModelRegistry);
 	}
 
 	@Test
@@ -65,7 +65,7 @@ public class SimpleFormTest {
 		assertEquals("Carpooling reduces environmental impact, traffic congestions and stress.",
 				createdAdvice.getDescription());
 
-		UUID id = session.getID(createdAdvice);
+		UUID id = createdAdvice.getID();
 		SpawningOperation<Advice> find = session.newSpawningOperation(Advice.class, FindByIDOperation.class);
 		values = Maps.newHashMap();
 		values.put("id", id);
@@ -89,7 +89,7 @@ public class SimpleFormTest {
 		assertEquals("Carpooling reduces environmental impact, traffic congestions and stress.",
 				createdAdvice.getDescription());
 
-		UUID id = session.getID(createdAdvice);
+		UUID id = createdAdvice.getID();
 		ManipulatingOperation<Advice> manipulatingOperation = session.newManipulatingOperation(Advice.class,
 				UpdateOperation.class);
 		values = Maps.newHashMap();
