@@ -10,19 +10,33 @@ import be.appify.stereotype.core.beans.fields.FieldAccessor;
 import be.appify.stereotype.core.beans.fields.FieldModel;
 import be.appify.stereotype.core.i18n.Message;
 import be.appify.stereotype.core.operation.GenericOperation;
+import be.appify.stereotype.core.operation.UndefinedOperationException;
+import be.appify.stereotype.core.util.LazyInitializer;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
-public final class BeanModel<T extends AbstractBean> {
-	private Map<String, FieldModel<T, ?>> fields;
+public final class BeanModel<B extends Bean> {
+	private Map<String, FieldModel<B, ?>> fields;
 	private Map<Class<?>, GenericOperation<?>> operations;
-	private List<FieldModel<T, ?>> orderedFields;
-	public Class<T> type;
+	private List<FieldModel<B, ?>> orderedFields;
+	public Class<B> type;
+	private final LazyInitializer<FieldModel<B, ?>> displayField = new LazyInitializer<FieldModel<B, ?>>() {
 
-	public static final class Builder<T extends AbstractBean> {
+		@Override
+		protected FieldModel<B, ?> initialize() {
+			for (FieldModel<B, ?> fieldModel : fields.values()) {
+				if (fieldModel.isDisplayField()) {
+					return fieldModel;
+				}
+			}
+			return null;
+		}
+	};
+
+	public static final class Builder<T extends Bean> {
 		private Collection<FieldModel<T, ?>> fields;
 		private Set<GenericOperation<?>> operations;
 		private final Class<T> type;
@@ -64,55 +78,55 @@ public final class BeanModel<T extends AbstractBean> {
 	private BeanModel() {
 	}
 
-	public List<FieldModel<T, ?>> getFields() {
+	public List<FieldModel<B, ?>> getFields() {
 		return Collections.unmodifiableList(orderedFields);
 	}
 
-	public T create(Map<String, Object> fieldValues) {
-		BeanConstruction<T> beanConstruction = new BeanConstruction<T>(type);
+	public B create(Map<String, Object> fieldValues) {
+		BeanConstruction<B> beanConstruction = new BeanConstruction<B>(type);
 		for (String propertyName : fieldValues.keySet()) {
 			if (!fields.containsKey(propertyName)) {
 				throw new IllegalArgumentException("No property <" + propertyName + "> defined on " + type + ".");
 			}
-			FieldModel<T, ?> fieldModel = fields.get(propertyName);
-			FieldAccessor<T, ?> fieldAccessor = fieldModel.getAccessor();
+			FieldModel<B, ?> fieldModel = fields.get(propertyName);
+			FieldAccessor<B, ?> fieldAccessor = fieldModel.getAccessor();
 			beanConstruction.addField(fieldAccessor, fieldValues.get(propertyName));
 		}
 		return beanConstruction.create();
 	}
 
-	public Object getValue(T bean, String propertyName) {
+	public Object getValue(B bean, String propertyName) {
 		if (!fields.containsKey(propertyName)) {
 			throw new IllegalArgumentException("No property <" + propertyName + "> defined on " + type + ".");
 		}
-		FieldModel<T, ?> fieldModel = fields.get(propertyName);
-		FieldAccessor<T, ?> accessor = fieldModel.getAccessor();
+		FieldModel<B, ?> fieldModel = fields.get(propertyName);
+		FieldAccessor<B, ?> accessor = fieldModel.getAccessor();
 		if (!accessor.canGet()) {
 			throw new IllegalArgumentException("Property <" + propertyName + "> on " + type + " is not readable.");
 		}
 		return fieldModel.getAccessor().get(bean);
 	}
 
-	public <F> void setValue(T bean, String propertyName, F value) {
+	public <F> void setValue(B bean, String propertyName, F value) {
 		if (!fields.containsKey(propertyName)) {
 			throw new IllegalArgumentException("No property <" + propertyName + "> defined on " + type + ".");
 		}
 		@SuppressWarnings("unchecked")
-		FieldModel<T, F> fieldModel = (FieldModel<T, F>) fields.get(propertyName);
-		FieldAccessor<T, F> accessor = fieldModel.getAccessor();
+		FieldModel<B, F> fieldModel = (FieldModel<B, F>) fields.get(propertyName);
+		FieldAccessor<B, F> accessor = fieldModel.getAccessor();
 		if (!accessor.canUpdate()) {
 			throw new IllegalArgumentException("Property <" + propertyName + "> on " + type + " is not writable.");
 		}
 		fieldModel.getAccessor().update(bean, value);
 	}
 
-	public <F> void validate(T bean, String propertyName, F value) {
+	public <F> void validate(B bean, String propertyName, F value) {
 		if (!fields.containsKey(propertyName)) {
 			throw new IllegalArgumentException("No property <" + propertyName + "> defined on " + type + ".");
 		}
 		@SuppressWarnings("unchecked")
-		FieldModel<T, F> fieldModel = (FieldModel<T, F>) fields.get(propertyName);
-		FieldAccessor<T, F> accessor = fieldModel.getAccessor();
+		FieldModel<B, F> fieldModel = (FieldModel<B, F>) fields.get(propertyName);
+		FieldAccessor<B, F> accessor = fieldModel.getAccessor();
 		if (!accessor.canUpdate()) {
 			throw new IllegalArgumentException("Property <" + propertyName + "> on " + type + " is not writable.");
 		}
@@ -120,12 +134,24 @@ public final class BeanModel<T extends AbstractBean> {
 		fieldModel.getAccessor().getValidator().validate(value, fieldName);
 	}
 
-	public <O extends GenericOperation<?>> GenericOperation<T> newOperation(Class<O> operationClass) {
+	public <O extends GenericOperation<?>> GenericOperation<B> newOperation(Class<O> operationClass) {
 		GenericOperation<?> operation = operations.get(operationClass);
+		if (operation == null) {
+			throw new UndefinedOperationException("Operation " + operationClass.getSimpleName() + " not defined for "
+					+ type.getName());
+		}
 		return operation.createNew(this);
 	}
 
-	public Class<T> getType() {
+	public Class<B> getType() {
 		return type;
+	}
+
+	public FieldModel<B, ?> getDisplayField() {
+		return displayField.get();
+	}
+
+	public FieldModel<B, ?> getField(String fieldName) {
+		return fields.get(fieldName);
 	}
 }

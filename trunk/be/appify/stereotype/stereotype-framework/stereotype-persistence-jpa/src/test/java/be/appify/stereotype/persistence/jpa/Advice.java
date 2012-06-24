@@ -2,7 +2,7 @@ package be.appify.stereotype.persistence.jpa;
 
 import javax.persistence.Entity;
 
-import be.appify.stereotype.core.beans.AbstractBean;
+import be.appify.stereotype.core.beans.Bean;
 import be.appify.stereotype.core.beans.fields.DisplayField;
 import be.appify.stereotype.core.beans.fields.Order;
 import be.appify.stereotype.core.beans.fields.stereotypes.LongTextType;
@@ -17,7 +17,7 @@ import be.appify.stereotype.core.operation.Update;
 @Create
 @FindByID
 @Update
-public class Advice extends AbstractBean {
+public class Advice extends Bean {
 	private String name;
 	private String description;
 

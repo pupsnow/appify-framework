@@ -6,13 +6,13 @@ import java.util.UUID;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import be.appify.stereotype.core.beans.AbstractBean;
+import be.appify.stereotype.core.beans.Bean;
 import be.appify.stereotype.core.beans.BeanModel;
 import be.appify.stereotype.core.persistence.Persistence;
 import be.appify.stereotype.core.persistence.Transaction;
 
 @Named
-public class FindByIDOperation<B extends AbstractBean> implements SpawningOperation<B> {
+public class FindByIDOperation<B extends Bean> implements SpawningOperation<B> {
 
 	private BeanModel<B> beanModel;
 	private Persistence persistence;
@@ -36,7 +36,7 @@ public class FindByIDOperation<B extends AbstractBean> implements SpawningOperat
 	}
 
 	@Override
-	public <N extends AbstractBean> SpawningOperation<N> createNew(BeanModel<N> beanModel) {
+	public <N extends Bean> SpawningOperation<N> createNew(BeanModel<N> beanModel) {
 		return new FindByIDOperation<N>(persistence, beanModel);
 	}
 

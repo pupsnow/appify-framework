@@ -10,9 +10,12 @@
 		<module>stereotype-core</module>
 		<module>stereotype-di-spring</module>
 		<module>stereotype-persistence-jpa</module>
+		<module>stereotype-view-spring-mvc</module>
+		<module>stereotype-demo</module>
 	</modules>
 	<properties>
 		<spring.version>3.1.1.RELEASE</spring.version>
+		<jetty.version>7.5.4.v20111024</jetty.version>
 	</properties>
 	<build>
 		<pluginManagement>
@@ -46,6 +49,11 @@
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>be.appify.stereotype</groupId>
+				<artifactId>stereotype-view-spring-mvc</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>org.hsqldb</groupId>
 				<artifactId>hsqldb</artifactId>
 				<version>2.2.8</version>
@@ -63,6 +71,11 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-context</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-webmvc</artifactId>
 				<version>${spring.version}</version>
 			</dependency>
 			<dependency>
@@ -120,6 +133,11 @@
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-entitymanager</artifactId>
 				<version>3.5.4-Final</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-servlet</artifactId>
+				<version>${jetty.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

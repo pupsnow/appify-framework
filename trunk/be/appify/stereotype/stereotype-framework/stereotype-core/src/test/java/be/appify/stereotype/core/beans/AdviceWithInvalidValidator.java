@@ -6,7 +6,7 @@ import be.appify.stereotype.core.beans.fields.stereotypes.ShortTextType;
 import be.appify.stereotype.core.beans.validation.MaxLength;
 import be.appify.stereotype.core.beans.validation.Required;
 
-public class AdviceWithInvalidValidator extends AbstractBean {
+public class AdviceWithInvalidValidator extends Bean {
 	private final String name;
 	private String description;
 	private int timesImplemented;

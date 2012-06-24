@@ -3,7 +3,7 @@ package be.appify.stereotype.core.beans;
 import be.appify.stereotype.core.beans.fields.stereotypes.LongTextType;
 import be.appify.stereotype.core.beans.fields.stereotypes.NumberType;
 
-public class AdviceMissingConstructorAnnotation extends AbstractBean {
+public class AdviceMissingConstructorAnnotation extends Bean {
 	private final String name;
 	private String description;
 	private int timesImplemented;

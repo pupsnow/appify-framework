@@ -1,0 +1,48 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>stereotype-framework</artifactId>
+		<groupId>be.appify.stereotype</groupId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>..</relativePath>
+	</parent>
+	<artifactId>stereotype-demo</artifactId>
+	<packaging>war</packaging>
+	<name>Stereotype Demo</name>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>${jetty.version}</version>
+			</plugin>
+		</plugins>
+	</build>
+	<dependencies>
+		<dependency>
+			<groupId>be.appify.stereotype</groupId>
+			<artifactId>stereotype-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>be.appify.stereotype</groupId>
+			<artifactId>stereotype-di-spring</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>be.appify.stereotype</groupId>
+			<artifactId>stereotype-view-spring-mvc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>be.appify.stereotype</groupId>
+			<artifactId>stereotype-persistence-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-servlet</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+		</dependency>
+	</dependencies>
+</project>

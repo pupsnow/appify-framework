@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Stereotype Demo</title>
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+		<script type="text/javascript" src="js/bootstrap.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
+		<style type="text/css">
+			body {
+				margin: 50px 0 0 0;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="navbar navbar-fixed-top">
+			<div class="navbar-inner">
+		    	<div class="container">
+		    		<a class="brand" href="#">Stereotype Demo</a>
+		    		<ul class="nav">
+						<li><a href="#">Dashboard</a></li>
+						<li class="active dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Data <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="#">Facts</a></li>
+								<li><a href="#">Advice</a></li>
+							</ul>
+						</li>
+					</ul>
+					<ul class="nav pull-right">
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-white icon-user"></i> Stijn Van Bael <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="#">Profile</a></li>
+								<li><a href="#">Settings</a></li>
+								<li><a href="#">Change password</a></li>
+								<li class="divider"></li>
+								<li><a href="#">Sign out</a></li>
+							</ul>
+						</li>
+					</ul>
+			    </div>
+		  	</div>
+		</div>
+		<div class="container">
+			<div class="row">
+				<ul class="nav nav-tabs">
+					<li class="active">
+					    <a href="#">Advice</a>
+					</li>
+					<li><a href="#">Conditions</a></li>
+					<li><a href="#">Confidence</a></li>
+					<li><a href="#">Actions</a></li>
+				</ul>
+				<form class="form-horizontal">
+				    <fieldset>
+					    <div class="control-group">
+					        <label class="control-label" for="advice.name">Name</label>
+					        <div class="controls">
+						        <input type="text" class="input-xlarge" id="advice.name">
+					        </div>
+					    </div>
+					    <div class="control-group">
+			            <label class="control-label" for="advice.description">Description</label>
+				            <div class="controls">
+				                <textarea class="input-xlarge" id="advice.description" rows="3"></textarea>
+				            </div>
+			            </div>
+			            <div class="form-actions">
+				            <button type="submit" class="btn btn-primary">Save changes</button>
+				            <button class="btn">Cancel</button>
+				        </div>
+				    </fieldset>
+				</form>
+			</div>
+		</div>
+	</body>
+</html>

@@ -5,7 +5,7 @@ import be.appify.stereotype.core.beans.fields.stereotypes.NumberType;
 import be.appify.stereotype.core.beans.fields.stereotypes.ShortTextType;
 import be.appify.stereotype.core.beans.validation.Required;
 
-public class AdviceWithAnnotationOnNonProperty extends AbstractBean {
+public class AdviceWithAnnotationOnNonProperty extends Bean {
 	private final String name;
 	private String description;
 	private int timesImplemented;

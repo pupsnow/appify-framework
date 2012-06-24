@@ -5,13 +5,13 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import be.appify.stereotype.core.beans.AbstractBean;
+import be.appify.stereotype.core.beans.Bean;
 import be.appify.stereotype.core.beans.BeanModel;
 import be.appify.stereotype.core.persistence.Persistence;
 import be.appify.stereotype.core.persistence.Transaction;
 
 @Named
-public class CreateOperation<B extends AbstractBean> implements SpawningOperation<B> {
+public class CreateOperation<B extends Bean> implements SpawningOperation<B> {
 
 	private final BeanModel<B> beanModel;
 	private Persistence persistence;
@@ -36,7 +36,7 @@ public class CreateOperation<B extends AbstractBean> implements SpawningOperatio
 	}
 
 	@Override
-	public <N extends AbstractBean> SpawningOperation<N> createNew(BeanModel<N> beanModel) {
+	public <N extends Bean> SpawningOperation<N> createNew(BeanModel<N> beanModel) {
 		return new CreateOperation<N>(persistence, beanModel);
 	}
 
