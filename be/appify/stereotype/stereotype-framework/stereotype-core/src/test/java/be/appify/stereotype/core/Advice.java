@@ -2,7 +2,7 @@ package be.appify.stereotype.core;
 
 import javax.persistence.Entity;
 
-import be.appify.stereotype.core.beans.AbstractBean;
+import be.appify.stereotype.core.beans.Bean;
 import be.appify.stereotype.core.beans.fields.DisplayField;
 import be.appify.stereotype.core.beans.fields.Order;
 import be.appify.stereotype.core.beans.fields.stereotypes.BooleanType;
@@ -12,14 +12,18 @@ import be.appify.stereotype.core.beans.fields.stereotypes.ShortTextType;
 import be.appify.stereotype.core.beans.validation.MinLength;
 import be.appify.stereotype.core.beans.validation.Required;
 import be.appify.stereotype.core.operation.Create;
+import be.appify.stereotype.core.operation.FindAll;
+import be.appify.stereotype.core.operation.FindAllContaining;
 import be.appify.stereotype.core.operation.FindByID;
 import be.appify.stereotype.core.operation.Update;
 
 @Entity
 @Create
 @FindByID
+@FindAll
+@FindAllContaining
 @Update
-public class Advice extends AbstractBean {
+public class Advice extends Bean {
 	private final String name;
 	private String description;
 	private int timesImplemented;

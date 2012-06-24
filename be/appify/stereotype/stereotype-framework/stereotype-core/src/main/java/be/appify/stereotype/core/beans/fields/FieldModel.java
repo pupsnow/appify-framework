@@ -13,6 +13,7 @@ public class FieldModel<T, F> implements Comparable<FieldModel<T, F>> {
 	private FieldType fieldType;
 	private FieldAccessor<T, F> fieldAccessor;
 	private int order;
+	private boolean displayField;
 
 	public static class Builder<T, F> {
 		private String name;
@@ -21,6 +22,7 @@ public class FieldModel<T, F> implements Comparable<FieldModel<T, F>> {
 		private FieldType fieldType;
 		private FieldAccessor<T, F> fieldAccessor;
 		private int order = Integer.MAX_VALUE;
+		private boolean displayField = false;
 
 		public Builder<T, F> name(String name) {
 			this.name = name;
@@ -52,6 +54,11 @@ public class FieldModel<T, F> implements Comparable<FieldModel<T, F>> {
 			return this;
 		}
 
+		public Builder<T, F> displayField(boolean displayField) {
+			this.displayField = displayField;
+			return this;
+		}
+
 		public FieldModel<T, F> build() {
 			Preconditions.checkNotNull(name, "name cannot be null");
 			Preconditions.checkNotNull(fieldAccess, "fieldAccess cannot be null");
@@ -64,6 +71,7 @@ public class FieldModel<T, F> implements Comparable<FieldModel<T, F>> {
 			instance.fieldType = fieldType;
 			instance.fieldAccessor = fieldAccessor;
 			instance.order = order;
+			instance.displayField = displayField;
 			return instance;
 		}
 	}
@@ -82,6 +90,7 @@ public class FieldModel<T, F> implements Comparable<FieldModel<T, F>> {
 		fieldAccessors.add(fieldAccessor);
 		extended.fieldAccessor = CompositeFieldAccessor.create(fieldAccessors);
 		extended.order = this.order;
+		extended.displayField = this.displayField;
 		return extended;
 	}
 
@@ -105,8 +114,13 @@ public class FieldModel<T, F> implements Comparable<FieldModel<T, F>> {
 		return fieldAccessor;
 	}
 
+	@Override
 	public int compareTo(FieldModel<T, F> other) {
 		return Integer.compare(this.order, other.order);
+	}
+
+	public boolean isDisplayField() {
+		return displayField;
 	}
 
 }

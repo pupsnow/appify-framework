@@ -27,14 +27,14 @@ public class SimpleBeanModelRegistry implements BeanModelRegistry {
 	public void initialize(Class<?>... classes) {
 		for (Class<?> c : classes) {
 			@SuppressWarnings("unchecked")
-			BeanModel<?> beanModel = analyzer.analyze((Class<? extends AbstractBean>) c);
+			BeanModel<?> beanModel = analyzer.analyze((Class<? extends Bean>) c);
 			models.put(c, beanModel);
 		}
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends AbstractBean> BeanModel<T> getBeanModel(Class<T> beanClass) {
+	public <T extends Bean> BeanModel<T> getBeanModel(Class<T> beanClass) {
 		BeanModel<?> beanModel = models.get(beanClass);
 		if (beanModel == null) {
 			for (Class<?> c : models.keySet()) {

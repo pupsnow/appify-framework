@@ -11,6 +11,7 @@ import org.apache.commons.lang.StringUtils;
 
 import be.appify.stereotype.core.beans.fields.CompositeFieldAccessor;
 import be.appify.stereotype.core.beans.fields.ConstructorAccessor;
+import be.appify.stereotype.core.beans.fields.DisplayField;
 import be.appify.stereotype.core.beans.fields.Field;
 import be.appify.stereotype.core.beans.fields.FieldAccess;
 import be.appify.stereotype.core.beans.fields.FieldAccessor;
@@ -42,7 +43,7 @@ class BeanAnalyzer {
 		this.operationFactory = operationFactory;
 	}
 
-	public <T extends AbstractBean> BeanModel<T> analyze(Class<T> beanClass) {
+	public <T extends Bean> BeanModel<T> analyze(Class<T> beanClass) {
 		return new BeanModel.Builder<T>(beanClass)
 				.fields(getFields(beanClass))
 				.operations(getOperations(beanClass))
@@ -220,6 +221,7 @@ class BeanAnalyzer {
 					+ " does not support " + fieldClass + ". Supported types are: <" + fieldType.getSupportedTypes()
 					+ ">.");
 		}
+		DisplayField displayField = getAnnotation(annotations, DisplayField.class);
 		return new FieldModel.Builder<T, F>()
 				.name(propertyName)
 				.fieldAccess(fieldAccess)
@@ -227,6 +229,7 @@ class BeanAnalyzer {
 				.fieldType(fieldType)
 				.fieldAccessor(fieldAccessor)
 				.order(order)
+				.displayField(displayField != null)
 				.build();
 	}
 

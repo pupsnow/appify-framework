@@ -6,13 +6,13 @@ import java.util.UUID;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import be.appify.stereotype.core.beans.AbstractBean;
+import be.appify.stereotype.core.beans.Bean;
 import be.appify.stereotype.core.beans.BeanModel;
 import be.appify.stereotype.core.persistence.Persistence;
 import be.appify.stereotype.core.persistence.Transaction;
 
 @Named
-public class UpdateOperation<B extends AbstractBean> implements ManipulatingOperation<B> {
+public class UpdateOperation<B extends Bean> implements ManipulatingOperation<B> {
 	private final BeanModel<B> beanModel;
 	private final Persistence persistence;
 
@@ -27,7 +27,7 @@ public class UpdateOperation<B extends AbstractBean> implements ManipulatingOper
 	}
 
 	@Override
-	public <N extends AbstractBean> UpdateOperation<N> createNew(BeanModel<N> beanModel) {
+	public <N extends Bean> UpdateOperation<N> createNew(BeanModel<N> beanModel) {
 		return new UpdateOperation<N>(persistence, beanModel);
 	}
 

@@ -7,11 +7,11 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public abstract class AbstractBean {
+public abstract class Bean {
 	@Id
 	private final UUID id;
 
-	public AbstractBean() {
+	public Bean() {
 		id = UUID.randomUUID();
 	}
 
@@ -24,7 +24,7 @@ public abstract class AbstractBean {
 		if (other == null || other.getClass() != this.getClass()) {
 			return false;
 		}
-		return Objects.equals(id, ((AbstractBean) other).id);
+		return Objects.equals(id, ((Bean) other).id);
 	}
 
 	@Override
