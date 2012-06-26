@@ -24,7 +24,6 @@ public final class BeanModel<B extends Bean> {
 	private List<FieldModel<B, ?>> orderedFields;
 	public Class<B> type;
 	private final LazyInitializer<FieldModel<B, ?>> displayField = new LazyInitializer<FieldModel<B, ?>>() {
-
 		@Override
 		protected FieldModel<B, ?> initialize() {
 			for (FieldModel<B, ?> fieldModel : fields.values()) {
@@ -35,6 +34,8 @@ public final class BeanModel<B extends Bean> {
 			return null;
 		}
 	};
+	private Message<?> name;
+	private Message<?> plural;
 
 	public static final class Builder<T extends Bean> {
 		private Collection<FieldModel<T, ?>> fields;
@@ -67,6 +68,8 @@ public final class BeanModel<B extends Bean> {
 			instance.orderedFields = Lists.newArrayList(instance.fields.values());
 			Collections.sort(instance.orderedFields);
 			instance.type = type;
+			instance.name = Message.create(type, "name");
+			instance.plural = Message.create(type, "plural");
 			instance.operations = Maps.newHashMap();
 			for (GenericOperation<?> operation : this.operations) {
 				instance.operations.put(operation.getClass(), operation);
@@ -130,7 +133,7 @@ public final class BeanModel<B extends Bean> {
 		if (!accessor.canUpdate()) {
 			throw new IllegalArgumentException("Property <" + propertyName + "> on " + type + " is not writable.");
 		}
-		Message<String> fieldName = Message.create(bean.getClass(), propertyName);
+		Message<String> fieldName = Message.create(bean.getClass(), "field." + propertyName);
 		fieldModel.getAccessor().getValidator().validate(value, fieldName);
 	}
 
@@ -145,6 +148,14 @@ public final class BeanModel<B extends Bean> {
 
 	public Class<B> getType() {
 		return type;
+	}
+
+	public Message<?> getName() {
+		return name;
+	}
+
+	public Message<?> getPlural() {
+		return plural;
 	}
 
 	public FieldModel<B, ?> getDisplayField() {
