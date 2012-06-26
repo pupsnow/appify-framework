@@ -24,22 +24,39 @@ public class Cal10nDictionary implements Dictionary {
 		stringConveyorCache = Maps.newHashMap();
 	}
 
+	@Override
 	public String translate(Message<?> message, Locale locale) {
 		try {
-			Object key = message.getKey();
-			if (key instanceof Enum) {
-				IMessageConveyor messageConveyor = getEnumConveyor(locale);
-				return messageConveyor.getMessage((Enum<?>) message.getKey(), message.getArguments().toArray());
-			} else {
-				StringMessageConveyor messageConveyor = getStringConveyor(locale);
-				return messageConveyor.getMessage(message.getDeclaringClass(), (String) message.getKey(),
-						message.getArguments().toArray());
-			}
+			return getMessage(message, locale);
 		} catch (MessageConveyorException e) {
 			String keyString = message.getDeclaringClass().getName() + "." + message.getKey();
 			LOGGER.error("Failed to find translation for message with key <" + keyString + ">.");
 			return "???" + keyString + "???";
 		}
+	}
+
+	@Override
+	public boolean hasTranslation(Message<?> message, Locale locale) {
+		try {
+			getMessage(message, locale);
+		} catch (MessageConveyorException e) {
+			return false;
+		}
+		return true;
+	}
+
+	private String getMessage(Message<?> message, Locale locale) {
+		String m;
+		Object key = message.getKey();
+		if (key instanceof Enum) {
+			IMessageConveyor messageConveyor = getEnumConveyor(locale);
+			m = messageConveyor.getMessage((Enum<?>) message.getKey(), message.getArguments().toArray());
+		} else {
+			StringMessageConveyor messageConveyor = getStringConveyor(locale);
+			m = messageConveyor.getMessage(message.getDeclaringClass(), (String) message.getKey(),
+					message.getArguments().toArray());
+		}
+		return m;
 	}
 
 	private StringMessageConveyor getStringConveyor(Locale locale) {

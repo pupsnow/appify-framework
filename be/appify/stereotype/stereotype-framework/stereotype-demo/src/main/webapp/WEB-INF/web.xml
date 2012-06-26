@@ -3,13 +3,17 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 	
+	<context-param>
+		<param-name>beanLocation</param-name>
+		<param-value>be.appify.stereotype.demo.*</param-value>
+	</context-param>
 	
     <servlet>
         <servlet-name>spring-mvc</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
         	<param-name>contextClass</param-name>
-        	<param-value> be.appify.stereotype.view.spring.mvc.StereotypeWebApplicationContext</param-value>
+        	<param-value>be.appify.stereotype.view.spring.mvc.StereotypeWebApplicationContext</param-value>
         </init-param>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
@@ -18,12 +22,10 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
 
-	<!-- 
     <servlet-mapping>
         <servlet-name>spring-mvc</servlet-name>
-        <url-pattern>/*.html</url-pattern>
+        <url-pattern>*.html</url-pattern>
     </servlet-mapping>
-	 -->
 	 
 	<session-config>
 		<session-timeout>30</session-timeout>

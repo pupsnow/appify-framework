@@ -24,7 +24,7 @@ public class RootController {
 		this.beanModelRegistry = beanModelRegistry;
 	}
 
-	@RequestMapping("/")
+	@RequestMapping("/index.html")
 	public Map<String, Collection<BeanModel<?>>> get() {
 		Map<String, Collection<BeanModel<?>>> model = Maps.newHashMap();
 		model.put("beanModels", beanModelRegistry.getAllRegisteredBeanModels());

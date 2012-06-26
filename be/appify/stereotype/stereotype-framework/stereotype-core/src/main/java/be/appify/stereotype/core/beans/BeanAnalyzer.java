@@ -203,7 +203,7 @@ class BeanAnalyzer {
 	private <T, F> FieldAccessor<T, F> getFieldAccessor(String propertyName, Method method, Class<T> declaringClass,
 			Validator<? super F> validator) {
 		Collection<FieldAccessor<T, F>> accessors = Lists.newArrayList();
-		Message<String> message = Message.create(declaringClass, propertyName);
+		Message<String> message = Message.create(declaringClass, "field." + propertyName);
 		if (isSetter(method)) {
 			accessors.add(SetterAccessor.<T, F> create(method, validator, message));
 		} else if (isGetter(method)) {
@@ -280,7 +280,7 @@ class BeanAnalyzer {
 		Class<F> fieldClass = (Class<F>) constructor.getParameterTypes()[index];
 		FieldAccess fieldAccess = FieldAccess.WRITE_ONCE;
 		Annotation[] annotations = constructor.getParameterAnnotations()[index];
-		Message<String> message = Message.create(constructor.getDeclaringClass(), propertyName);
+		Message<String> message = Message.create(constructor.getDeclaringClass(), "field." + propertyName);
 		FieldAccessor<T, F> fieldAccessor = ConstructorAccessor.create(index, validator, message);
 		int order = Integer.MAX_VALUE;
 		Order orderAnnotation = getAnnotation(annotations, Order.class);

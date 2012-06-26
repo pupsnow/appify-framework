@@ -9,7 +9,8 @@ public enum FieldType {
 	TEXT(String.class),
 	BOOLEAN(boolean.class, Boolean.class),
 	NUMBER(int.class, long.class, float.class, double.class, Number.class),
-	DATE(Date.class);
+	DATE(Date.class),
+	REFERENCE(Object.class);
 
 	private Collection<Class<?>> supportedTypes;
 
