@@ -47,6 +47,11 @@
 			<version>3.0.9</version>
 		</dependency>
 		<dependency>
+			<groupId>com.google.appengine</groupId>
+			<artifactId>appengine-api-1.0-sdk</artifactId>
+			<version>1.6.5</version>
+		</dependency>
+		<dependency>
 			<groupId>be.appify</groupId>
 			<artifactId>appify-core</artifactId>
 		</dependency>
